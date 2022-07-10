@@ -1,0 +1,12 @@
+<%- include('./layout/layout-header.ejs', {title: title}) %>
+<h1><%= title %></h1> 
+<div class="card">
+  <h3 class="card__title"><%= item.title %></h3>
+  <p class="card__description"><%= item.description %></з>
+  <p class="card__authors"><%= item.authors %></p>
+  <span class="card__favorite <%= item.favorite ? 'card__favorite--active' : '' %>">favorite</span>
+  <p class="card__file-cover"><%= item.fileCover %></p>
+  <p class="card__file-name"><%= item.fileName %></p>
+  <p class="card__file-book"><%= item.fileBook %></p>
+</div>
+<%- include('./layout/layout-footer.ejs') %>

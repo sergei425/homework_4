@@ -21,33 +21,19 @@ const store = {
 }
 
 router.get('/', (req, res) => {
-  res.json(store.books)
-})
-router.get('/:id', (req, res) => {
-  const item = store.books.find(el => el.id === req.params.id)
-
-  if (item) {
-    res.json(item)
-  } else {
-    res.status(404).json('not found')
-  }
+  res.render("index", {
+    title: "Index",
+    books: store.books,
+  });
 })
 
-router.get('/:id/download', (req, res) => {
-  const item = store.books.find(el => el.id === req.params.id)
-
-  if (item) {
-    res.download(path.join(__dirname, item.fileName), (err)=>{
-      console.log(err);
-    });
-    console.log('Your file has been downloaded!')
-  }
-  // } else {
-  //   res.status(404).json('not found')
-  // }
+router.get('/create', (req, res) => {
+  res.render("create", {
+    title: "Create"
+  });
 })
 
-router.post('/', (req, res) => {
+router.post('/create', (req, res) => {
   multer.single('book.txt')
   const {title, description, authors, favorite, fileCover, fileName} = req.body
 
@@ -57,9 +43,16 @@ router.post('/', (req, res) => {
   res.status(200).json(newBook)
 })
 
+router.get('/update/:id', (req, res) => {
+  console.log(req.params.id);
+  const item = store.books.find(el => el.id === req.params.id)
+  res.render("update", {
+    title: "Update",
+    item
+  });
+})
 
-router.put('/:id', (req, res) => {
-  
+router.post('/update/:id', (req, res) => {
   const item = store.books.find(el => el.id === req.params.id)
   if (item) {
     const {title, description, authors, favorite, fileCover, fileName, fileBook} = req.body
@@ -76,6 +69,33 @@ router.put('/:id', (req, res) => {
     res.status(404).json('not found')
   }
 });
+
+router.get('/:id', (req, res) => {
+  const item = store.books.find(el => el.id === req.params.id)
+
+  if (!item) {
+    
+    //res.redirect('/api/books')
+  } 
+
+  res.render('book', {
+    title: "View",
+    item
+  });
+})
+
+router.get('/:id/download', (req, res) => {
+  const item = store.books.find(el => el.id === req.params.id)
+
+  if (item) {
+    res.download(path.join(__dirname, item.fileName), (err)=>{
+      console.log(err);
+    });
+    console.log('Your file has been downloaded!')
+  } else {
+    res.status(404).json('not found')
+  }
+})
 
 router.delete('/:id', (req, res) => {
   const item = store.books.find(el => el.id === req.params.id)

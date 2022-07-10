@@ -1,0 +1,12 @@
+<%- include('./layout/layout-header.ejs', {title: title}) %>
+<h1><%= title %></h1>
+<% if(books.length) { %> 
+  <% books.map((el, idx)=> { %>
+  <div class="card">
+    <h3 class="card__title"><%= el.title %></h3>
+  </div>
+  <% }) %> 
+<% } else { %>
+  <h3 class="mt-5">Книг пока нет</h3>
+<% } %> 
+<%- include('./layout/layout-footer.ejs') %>
